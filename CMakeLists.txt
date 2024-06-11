@@ -3,10 +3,12 @@ project(OpenGL-Testing)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(OpenGL-Testing main.cpp)
+add_executable(OpenGL-Testing main.cpp
+        include/Window.h
+        src/Window.cpp)
 
 find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+find_package(glfw3 REQUIRED)
+include_directories( ${OPENGL_INCLUDE_DIRS} ${GLFW3_INCLUDE_DIRS})
 
-target_link_libraries(OpenGL-Testing ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+target_link_libraries(OpenGL-Testing ${OPENGL_LIBRARIES} ${GLFW3_LIBRARY})

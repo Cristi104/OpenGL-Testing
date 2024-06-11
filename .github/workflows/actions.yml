@@ -9,6 +9,7 @@ jobs:
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y build-essential
       - run: sudo apt-get install -y libopengl-dev
+      - run: sudo apt-get install -y libgl1-mesa-dev
       - run: sudo apt-get install -y clang-tidy
       - run: sudo apt-get install -y cmake
       - run: cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug
@@ -23,6 +24,7 @@ jobs:
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y build-essential
       - run: sudo apt-get install -y libopengl-dev
+      - run: sudo apt-get install -y libgl1-mesa-dev
       - run: sudo apt-get install -y cmake
       - run: cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug
       - run: make

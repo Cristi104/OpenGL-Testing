@@ -9,6 +9,7 @@ add_executable(OpenGL-Testing main.cpp
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW3_INCLUDE_DIRS} include)
+find_package(GLEW REQUIRED)
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW3_INCLUDE_DIRS} include ${GLEW_INCLIDE_DIRS})
 
-target_link_libraries(OpenGL-Testing OpenGL glfw)
+target_link_libraries(OpenGL-Testing OpenGL glfw GLEW)

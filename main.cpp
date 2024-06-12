@@ -1,26 +1,44 @@
 #include <iostream>
-#include "GLFW/glfw3.h"
-#include "../include/Window.h"
+#include <GLFW/glfw3.h>
 
-int main(){
+int main()
+{
+    GLFWwindow* window;
 
-    glfwInit();
+    /* Initialize the library */
+    if (!glfwInit())
+        return -1;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow* window = glfwCreateWindow(800, 600, "test", nullptr, nullptr);
-    if(window == nullptr){
+    /* Create a windowed mode window and its OpenGL context */
+    window = glfwCreateWindow(800, 600, "Hello World", nullptr, nullptr);
+    if (!window)
+    {
         glfwTerminate();
         return -1;
     }
 
+    /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
-    glViewport(0,0,800,600);
+    /* Loop until the user closes the window */
+    while (!glfwWindowShouldClose(window))
+    {
+        /* Render here */
+        glClear(GL_COLOR_BUFFER_BIT);
 
-    std::cout << "Hello, World!\n";
+        glBegin(GL_TRIANGLES);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(0.0f, 0.5f);
+        glVertex2f(0.5f, -0.5f);
+        glEnd();
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
     return 0;
 }

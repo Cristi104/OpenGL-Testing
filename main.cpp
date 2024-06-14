@@ -100,18 +100,26 @@ int main()
     float positions[] = {-0.5f, -0.5f,
                          0.5f, -0.5f,
                          0.5f, 0.5f,
+                         -0.5f, 0.5f
+    };
 
-                         0.5f, 0.5f,
-                         -0.5f, 0.5f,
-                         -0.5f, -0.5f};
+    unsigned int indices[] = {
+        0, 1, 2,
+        0, 2, 3
+    };
 
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void*)0);
     glEnableVertexAttribArray(0);
+
+    unsigned int ibo;
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * 2 * sizeof(int), indices, GL_STATIC_DRAW);
 
     ShaderSource source = ParseShader("../res/shaders/shader.glsl");
 
@@ -126,8 +134,8 @@ int main()
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-//        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, &buffer);
+//        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

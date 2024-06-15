@@ -5,6 +5,16 @@
 #include <string>
 #include <sstream>
 
+static void GLClearError(){
+    while (glGetError() != GL_NO_ERROR);
+}
+
+static void GLCheckError(){
+    while (GLenum error = glGetError()){
+        std::cout << "OpenGL Error: 0x" << std::hex << error << '\n';
+    }
+}
+
 struct ShaderSource{
     std::string VertexSource;
     std::string FragmentSource;
@@ -30,7 +40,8 @@ static ShaderSource ParseShader(const std::string& path){
                 type = ShaderType::FRAGMENT;
             }
         } else {
-            ss[(int)type] << line << '\n';
+            if(type != ShaderType::NONE)
+                ss[(int)type] << line << '\n';
         }
     }
     return {ss[0].str(), ss[1].str()};
@@ -113,7 +124,7 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr);
     glEnableVertexAttribArray(0);
 
     unsigned int ibo;
@@ -135,8 +146,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
 //        glDrawArrays(GL_TRIANGLES, 0, 6);
+        GLClearError();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
+        GLCheckError();
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 

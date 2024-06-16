@@ -4,17 +4,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-
-static void GLClearError(){
-    while (glGetError() != GL_NO_ERROR);
-}
-
-static void GLCheckError(){
-    while (GLenum error = glGetError()){
-        std::cout << "OpenGL Error: 0x" << std::hex << error << '\n';
-        exit(1);
-    }
-}
+#include "GLErrorCheck.h"
 
 struct ShaderSource{
     std::string VertexSource;
@@ -161,7 +151,7 @@ int main() {
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
-
+        GLErrorCheck::GLClearError();
 //        glDrawArrays(GL_TRIANGLES, 0, 6);
         glUseProgram(program);
         glUniform4f(uid, r, 0.0f, 0.0f, 1.0f);
@@ -170,7 +160,7 @@ int main() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        GLCheckError();
+        GLErrorCheck::GLCheckError();
         if(r > 1.0f)
             inc *= -1;
         if(r < 0.0f)

@@ -3,9 +3,14 @@ project(OpenGL-Testing)
 
 set(CMAKE_CXX_STANDARD 23)
 
+file(GLOB sources
+        "include/*.h"
+        "src/*.cpp"
+)
+
 add_executable(OpenGL-Testing main.cpp
-        include/Window.h
-        src/Window.cpp)
+        ${sources}
+)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)

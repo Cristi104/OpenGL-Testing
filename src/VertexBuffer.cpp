@@ -20,13 +20,13 @@ VertexBuffer::~VertexBuffer() {
     GLErrorCheck::GLCheckError();
 }
 
-void VertexBuffer::Bind() {
+void VertexBuffer::bind() const {
     GLErrorCheck::GLClearError();
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     GLErrorCheck::GLCheckError();
 }
 
-void VertexBuffer::Unbind() {
+void VertexBuffer::unbind() {
     GLErrorCheck::GLClearError();
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     GLErrorCheck::GLCheckError();

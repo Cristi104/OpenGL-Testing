@@ -9,14 +9,16 @@
 class IndexBuffer {
 private:
     unsigned int m_RendererID;
+    unsigned int m_Count;
 public:
-    IndexBuffer(const void* data, unsigned int size);
+    IndexBuffer(const unsigned short* data, unsigned int count);
     ~IndexBuffer();
 
-    void Bind();
-    void Unbind();
-};
+    void bind() const;
+    static void unbind();
 
+    [[nodiscard]] unsigned int getMCount() const;
+};
 
 
 #endif //OPENGL_TESTING_INDEXBUFFER_H

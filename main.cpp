@@ -12,6 +12,7 @@ static void GLClearError(){
 static void GLCheckError(){
     while (GLenum error = glGetError()){
         std::cout << "OpenGL Error: 0x" << std::hex << error << '\n';
+        exit(1);
     }
 }
 
@@ -84,18 +85,20 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
     return program;
 }
 
-int main()
-{
-    GLFWwindow* window;
+int main() {
+    GLFWwindow *window;
 
     /* Initialize the library */
     if (!glfwInit())
         return -1;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(800, 600, "Hello World", nullptr, nullptr);
-    if (!window)
-    {
+    if (!window) {
         glfwTerminate();
         return -1;
     }
@@ -116,9 +119,13 @@ int main()
     };
 
     unsigned int indices[] = {
-        0, 1, 2,
-        0, 2, 3
+            0, 1, 2,
+            0, 2, 3
     };
+
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
     unsigned int buffer;
     glGenBuffers(1, &buffer);
@@ -141,6 +148,12 @@ int main()
     glUseProgram(program);
 
     int uid = glGetUniformLocation(program,"u_Color");
+
+    glBindVertexArray(0);
+    glUseProgram(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     float r = 0.0f;
     float inc = 0.05f;
     /* Loop until the user closes the window */
@@ -150,8 +163,12 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
 //        glDrawArrays(GL_TRIANGLES, 0, 6);
-        GLClearError();
+        glUseProgram(program);
         glUniform4f(uid, r, 0.0f, 0.0f, 1.0f);
+
+        glBindVertexArray(vao);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         GLCheckError();
         if(r > 1.0f)

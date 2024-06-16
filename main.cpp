@@ -7,6 +7,7 @@
 #include "GLErrorCheck.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 struct ShaderSource{
     std::string VertexSource;
     std::string FragmentSource;
@@ -114,14 +115,11 @@ int main() {
             0, 2, 3
     };
 
-    unsigned int vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
+    VertexArray vertexArray;
     VertexBuffer vertexBuffer(positions, 4 * 2 *sizeof(float));
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr);
-    glEnableVertexAttribArray(0);
+    VertexBufferLayout vertexBufferLayout;
+    vertexBufferLayout.pushFloat(2);
+    vertexArray.addBuffer(vertexBuffer,vertexBufferLayout);
 
     IndexBuffer indexBuffer(indices, 6);
 
@@ -151,7 +149,7 @@ int main() {
         glUseProgram(program);
         glUniform4f(uid, r, 0.0f, 0.0f, 1.0f);
 
-        glBindVertexArray(vao);
+        vertexArray.bind();
         indexBuffer.bind();
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);

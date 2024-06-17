@@ -7,11 +7,13 @@
 
 
 #include <string>
+#include <unordered_map>
 
 class Shader {
 private:
     std::string m_path;
     unsigned int m_RendererID;
+    std::unordered_map<std::string, int> m_UniformCache;
 
     /// Compiles a shader.
     /// @param type The type of shader that should be created.
@@ -22,7 +24,7 @@ private:
     /// Searches for a uniform inside the program
     /// @param name The name of the uniform.
     /// @return The id of the uniform.
-    [[nodiscard]] int getUniformLocation(const std::string& name) const;
+    [[nodiscard]] int getUniformLocation(const std::string& name);
 
 public:
 

@@ -101,9 +101,13 @@ void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2,
     GLErrorCheck::GLCheckError();
 }
 
-int Shader::getUniformLocation(const std::string &name) const {
+int Shader::getUniformLocation(const std::string &name) {
+    if(m_UniformCache.find(name) != m_UniformCache.end())
+        return m_UniformCache.at(name);
     GLErrorCheck::GLClearError();
     int id = glGetUniformLocation(m_RendererID, name.c_str());
+    if(id != -1)
+        m_UniformCache.insert(std::make_pair(name, id));
     GLErrorCheck::GLCheckError();
     return id;
 }

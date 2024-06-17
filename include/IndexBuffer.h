@@ -10,6 +10,7 @@ class IndexBuffer {
 private:
     unsigned int m_RendererID;
     unsigned int m_Count;
+
 public:
     IndexBuffer(const unsigned short* data, unsigned int count);
     ~IndexBuffer();
@@ -17,7 +18,7 @@ public:
     void bind() const;
     static void unbind();
 
-    [[nodiscard]] unsigned int getMCount() const;
+    [[nodiscard]] unsigned int getCount() const;
 };
 
 

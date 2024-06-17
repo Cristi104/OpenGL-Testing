@@ -33,6 +33,6 @@ void IndexBuffer::unbind() {
     GLErrorCheck::GLCheckError();
 }
 
-unsigned int IndexBuffer::getMCount() const {
+unsigned int IndexBuffer::getCount() const {
     return m_Count;
 }

@@ -8,9 +8,10 @@
 
 class GLErrorCheck {
 public:
+    GLErrorCheck() = delete;
+
     static void GLClearError();
     static void GLCheckError();
-    GLErrorCheck() = delete;
 };
 
 

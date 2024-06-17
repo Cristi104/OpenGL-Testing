@@ -12,13 +12,15 @@
 class VertexArray {
 private:
     unsigned int m_RendererID;
+
 public:
     VertexArray();
     ~VertexArray();
 
-    void addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout);
     void bind() const;
     static void unbind();
+
+    void addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout);
 };
 
 

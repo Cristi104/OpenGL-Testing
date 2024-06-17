@@ -12,8 +12,9 @@ class Shader {
 private:
     std::string m_path;
     unsigned int m_RendererID;
+
     static unsigned int CompileShader(unsigned int type, const std::string& shader);
-    int getUniformLocation(const std::string& name) const;
+    [[nodiscard]] int getUniformLocation(const std::string& name) const;
 
 public:
     explicit Shader(const std::string& path);

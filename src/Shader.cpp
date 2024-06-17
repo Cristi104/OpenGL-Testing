@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include "Shader.h"
+#include "GLErrorCheck.h"
 
 Shader::Shader(const std::string &path)
         :m_path(path), m_RendererID(0){
@@ -39,6 +40,7 @@ Shader::Shader(const std::string &path)
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, ss[1].str());
     unsigned int vs = CompileShader(GL_VERTEX_SHADER,ss[0].str());
 
+    GLErrorCheck::GLClearError();
     m_RendererID = glCreateProgram();
     glAttachShader(m_RendererID, vs);
     glAttachShader(m_RendererID, fs);
@@ -48,10 +50,12 @@ Shader::Shader(const std::string &path)
     // shader cleanup
     glDeleteShader(vs);
     glDeleteShader(fs);
+    GLErrorCheck::GLCheckError();
 }
 
 unsigned int Shader::CompileShader(unsigned int type, const std::string &shader) {
     // compiling shader
+    GLErrorCheck::GLClearError();
     unsigned int id = glCreateShader(type);
     const char* src = shader.c_str();
     glShaderSource(id, 1, &src, nullptr);
@@ -69,25 +73,37 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string &shader)
         glDeleteShader(id);
         return 0;
     }
+    GLErrorCheck::GLCheckError();
     return id;
 }
 
 void Shader::unbind() {
+    GLErrorCheck::GLClearError();
     glUseProgram(0);
+    GLErrorCheck::GLCheckError();
 }
 
 void Shader::bind() const {
+    GLErrorCheck::GLClearError();
     glUseProgram(m_RendererID);
+    GLErrorCheck::GLCheckError();
 }
 
 Shader::~Shader() {
+    GLErrorCheck::GLClearError();
     glDeleteProgram(m_RendererID);
+    GLErrorCheck::GLCheckError();
 }
 
 void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2, float v3) {
+    GLErrorCheck::GLClearError();
     glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
+    GLErrorCheck::GLCheckError();
 }
 
 int Shader::getUniformLocation(const std::string &name) const {
-    return glGetUniformLocation(m_RendererID, name.c_str());
+    GLErrorCheck::GLClearError();
+    int id = glGetUniformLocation(m_RendererID, name.c_str());
+    GLErrorCheck::GLCheckError();
+    return id;
 }

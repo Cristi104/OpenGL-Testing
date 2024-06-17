@@ -10,7 +10,10 @@ class GLErrorCheck {
 public:
     GLErrorCheck() = delete;
 
+    /// Clears all OpenGL errors.
     static void GLClearError();
+
+    /// Searches for OpenGL errors and prints out all of them before terminating the program.
     static void GLCheckError();
 };
 

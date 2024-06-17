@@ -14,6 +14,7 @@ struct VertexBufferElement {
     unsigned int type;
     unsigned char normalized;
 
+    /// @return Size in bytes of a given data type.
     static unsigned int getSize(unsigned int type);
 };
 
@@ -25,11 +26,17 @@ private:
 public:
     VertexBufferLayout();
 
+    /// @param count number of floats to be added to the layout.
     void pushFloat(unsigned int count);
+    /// @param count number of unsigned ints to be added to the layout.
     void pushUInt(unsigned int count);
+    /// @param count number of unsigned chars to be added to the layout.
     void pushUChr(unsigned int count);
 
+    /// @return The amount of bytes between two vertices.
     [[nodiscard]] unsigned int getStride() const;
+
+    /// @return The elements of the layout.
     [[nodiscard]] const std::vector<VertexBufferElement> &getElements() const;
 };
 

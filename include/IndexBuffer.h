@@ -12,12 +12,21 @@ private:
     unsigned int m_Count;
 
 public:
+    /// Constructs an IndexBuffer.
+    /// @param data An array of unsigned short indices.
+    /// @param count Number of elements in the array.
     IndexBuffer(const unsigned short* data, unsigned int count);
+
     ~IndexBuffer();
 
+    /// Binds the IndexBuffer to the OpenGL context for.
+    /// Any other currently bound IndexBuffers will be unbound.
     void bind() const;
+
+    /// Unbinds any currently bound IndexBuffers.
     static void unbind();
 
+    /// @return Number of indices stored in the IndexBuffer.
     [[nodiscard]] unsigned int getCount() const;
 };
 

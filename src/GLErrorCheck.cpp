@@ -11,8 +11,11 @@ void GLErrorCheck::GLClearError() {
 }
 
 void GLErrorCheck::GLCheckError() {
-    if(GLenum error = glGetError()){
+    bool ok = true;
+    while (GLenum error = glGetError()){
         std::cout << "OpenGL Error: 0x" << std::hex << error << '\n';
-        exit(1);
+        ok = false;
     }
+    if (!ok)
+        exit(1);
 }

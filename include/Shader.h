@@ -13,16 +13,35 @@ private:
     std::string m_path;
     unsigned int m_RendererID;
 
+    /// Compiles a shader.
+    /// @param type The type of shader that should be created.
+    /// @param shader Source code of the shader.
+    /// @return The id of the created shader.
     static unsigned int CompileShader(unsigned int type, const std::string& shader);
+
+    /// Searches for a uniform inside the program
+    /// @param name The name of the uniform.
+    /// @return The id of the uniform.
     [[nodiscard]] int getUniformLocation(const std::string& name) const;
 
 public:
+
+    /// Constructs a shader form source code.
+    /// @param path Path to the source code file.
     explicit Shader(const std::string& path);
+
     ~Shader();
 
+    /// Binds the Shaders to the OpenGL context for.
+    /// Any other currently bound Shaders will be unbound.
     void bind() const;
+
+    /// Unbinds any currently bound Shaders.
     static void unbind();
 
+    /// Sets the value of a uniform.
+    /// @param name The name of the uniform.
+    /// @param v1, v2, v3, v4 values to be written to the uniform.
     void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 };
 

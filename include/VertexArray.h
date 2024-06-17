@@ -15,11 +15,19 @@ private:
 
 public:
     VertexArray();
+
     ~VertexArray();
 
+    /// Binds the VertexArray to the OpenGL context for.
+    /// Any other currently bound VertexArrays will be unbound.
     void bind() const;
+
+    /// Unbinds any currently bound VertexArrays.
     static void unbind();
 
+    /// Adds a VertexBuffer with a specific layout.
+    /// @param buffer VertexBuffer to be added.
+    /// @param layout The layout of the buffer.
     void addBuffer(const VertexBuffer& buffer, const VertexBufferLayout& layout);
 };
 

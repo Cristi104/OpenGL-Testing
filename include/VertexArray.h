@@ -18,7 +18,7 @@ public:
 
     ~VertexArray();
 
-    /// Binds the VertexArray to the OpenGL context for.
+    /// Binds the VertexArray to the OpenGL context.
     /// Any other currently bound VertexArrays will be unbound.
     void bind() const;
 

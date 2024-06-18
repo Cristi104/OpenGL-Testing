@@ -19,7 +19,7 @@ public:
 
     ~IndexBuffer();
 
-    /// Binds the IndexBuffer to the OpenGL context for.
+    /// Binds the IndexBuffer to the OpenGL context.
     /// Any other currently bound IndexBuffers will be unbound.
     void bind() const;
 

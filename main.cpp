@@ -8,6 +8,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Renderer.h"
+#include "Texture.h"
 
 
 int main() {
@@ -32,10 +33,10 @@ int main() {
 
     std::cout << glGetString(GL_VERSION) << '\n';
 
-    float positions[] = {-0.5f, -0.5f,
-                         0.5f, -0.5f,
-                         0.5f, 0.5f,
-                         -0.5f, 0.5f
+    float positions[] = {-0.5f, -0.5f, 0.0f, 0.0f,
+                         0.5f, -0.5f, 1.0f, 0.0f,
+                         0.5f, 0.5f, 1.0f, 1.0f,
+                         -0.5f, 0.5f, 0.0f, 1.0f
     };
 
     unsigned short indices[] = {
@@ -43,16 +44,24 @@ int main() {
             0, 2, 3
     };
 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     VertexArray vertexArray;
-    VertexBuffer vertexBuffer(positions, 4 * 2 *sizeof(float));
+    VertexBuffer vertexBuffer(positions, 4 * 4 *sizeof(float));
     VertexBufferLayout vertexBufferLayout;
+    vertexBufferLayout.pushFloat(2);
     vertexBufferLayout.pushFloat(2);
     vertexArray.addBuffer(vertexBuffer,vertexBufferLayout);
 
     IndexBuffer indexBuffer(indices, 6);
 
-    Shader shader("../res/shaders/shader.glsl");
+    Shader shader("../res/shaders/textureShader.glsl");
     shader.bind();
+
+    Texture texture("../res/assets/None.png");
+    texture.bind();
+    shader.setUniform1i("u_Texture", 0);
+
     Renderer renderer;
 
     float r = 0.0f;

@@ -18,7 +18,7 @@ public:
 
     ~VertexBuffer();
 
-    /// Binds the VertexBuffer to the OpenGL context for.
+    /// Binds the VertexBuffer to the OpenGL context.
     /// Any other currently bound VertexBuffers will be unbound.
     void bind() const;
 

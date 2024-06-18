@@ -34,7 +34,7 @@ public:
 
     ~Shader();
 
-    /// Binds the Shaders to the OpenGL context for.
+    /// Binds the Shaders to the OpenGL context.
     /// Any other currently bound Shaders will be unbound.
     void bind() const;
 
@@ -45,6 +45,11 @@ public:
     /// @param name The name of the uniform.
     /// @param v1, v2, v3, v4 values to be written to the uniform.
     void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+
+    /// Sets the value of a uniform.
+    /// @param name The name of the uniform.
+    /// @param v1 values to be written to the uniform.
+    void setUniform1i(const std::string& name, int v0);
 };
 
 

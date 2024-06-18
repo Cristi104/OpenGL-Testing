@@ -111,3 +111,9 @@ int Shader::getUniformLocation(const std::string &name) {
     GLErrorCheck::GLCheckError();
     return id;
 }
+
+void Shader::setUniform1i(const std::string &name, int v0) {
+    GLErrorCheck::GLClearError();
+    glUniform1i(getUniformLocation(name), v0);
+    GLErrorCheck::GLCheckError();
+}

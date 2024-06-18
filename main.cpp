@@ -8,27 +8,23 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Renderer.h"
 
 
 int main() {
     GLFWwindow *window;
-
-    /* Initialize the library */
     if (!glfwInit())
         return -1;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
-    /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(800, 600, "Hello World", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         return -1;
     }
 
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
@@ -56,15 +52,9 @@ int main() {
 
     IndexBuffer indexBuffer(indices, 6);
 
-//    ShaderSource source = ParseShader("../res/shaders/shader.glsl");
     Shader shader("../res/shaders/shader.glsl");
     shader.bind();
-//    std::cout << source.VertexSource << source.FragmentSource;
-
-//    glBindVertexArray(0);
-//    glUseProgram(0);
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    Renderer renderer;
 
     float r = 0.0f;
     float inc = 0.05f;
@@ -72,16 +62,12 @@ int main() {
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-//        glDrawArrays(GL_TRIANGLES, 0, 6);
-//        glUseProgram(program);
-//        glUniform4f(uid, r, 0.0f, 0.0f, 1.0f);
-        shader.setUniform4f("u_Color", r, 0.5f, 0.0f, 1.0f);
-        vertexArray.bind();
-        indexBuffer.bind();
+        renderer.clear();
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
-        GLErrorCheck::GLCheckError();
+        shader.setUniform4f("u_Color", r, 0.5f, 0.0f, 1.0f);
+
+        renderer.draw(vertexArray, indexBuffer, shader);
+
         if(r > 1.0f)
             inc *= -1;
         if(r < 0.0f)

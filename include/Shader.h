@@ -8,6 +8,7 @@
 
 #include <string>
 #include <unordered_map>
+#include "../external/glm/gtc/matrix_transform.hpp"
 
 class Shader {
 private:
@@ -45,6 +46,11 @@ public:
     /// @param name The name of the uniform.
     /// @param v1, v2, v3, v4 values to be written to the uniform.
     void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+
+    /// Sets the value of a uniform.
+    /// @param name The name of the uniform.
+    /// @param v1, v2, v3, v4 values to be written to the uniform.
+    void setUniformMat4f(const std::string& name, const glm::mat4& mat);
 
     /// Sets the value of a uniform.
     /// @param name The name of the uniform.

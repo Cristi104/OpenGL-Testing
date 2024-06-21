@@ -117,3 +117,9 @@ void Shader::setUniform1i(const std::string &name, int v0) {
     glUniform1i(getUniformLocation(name), v0);
     GLErrorCheck::GLCheckError();
 }
+
+void Shader::setUniformMat4f(const std::string &name, const glm::mat4 &mat) {
+    GLErrorCheck::GLClearError();
+    glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE,  &mat[0][0]);
+    GLErrorCheck::GLCheckError();
+}

@@ -3,13 +3,15 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "../external/glm/glm.hpp"
+#include "../external/glm/gtc/matrix_transform.hpp"
+
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Renderer.h"
 #include "Texture.h"
-
 
 int main() {
     GLFWwindow *window;
@@ -56,12 +58,15 @@ int main() {
 
     IndexBuffer indexBuffer(indices, 6);
 
+    glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
     Shader shader("../res/shaders/textureShader.glsl");
     shader.bind();
 
     Texture texture("../res/assets/None.png");
     texture.bind();
     shader.setUniform1i("u_Texture", 0);
+    shader.setUniformMat4f("u_Proj", proj);
 
     Renderer renderer;
 

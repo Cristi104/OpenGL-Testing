@@ -35,12 +35,17 @@ int main() {
 
     std::cout << glGetString(GL_VERSION) << '\n';
 
-    float positions[] = {-0.5f, -0.5f, 0.0f, 0.0f,
-                         0.5f, -0.5f, 1.0f, 0.0f,
-                         0.5f, 0.5f, 1.0f, 1.0f,
-                         -0.5f, 0.5f, 0.0f, 1.0f
-    };
+//    float positions[] = {-0.5f, -0.5f, 0.0f, 0.0f,
+//                         0.5f, -0.5f, 1.0f, 0.0f,
+//                         0.5f, 0.5f, 1.0f, 1.0f,
+//                         -0.5f, 0.5f, 0.0f, 1.0f
+//    };
 
+    float positions[] = {-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+                         0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                         0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+                         -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
+    };
     unsigned short indices[] = {
             0, 1, 2,
             0, 2, 3
@@ -50,26 +55,28 @@ int main() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     VertexArray vertexArray;
-    VertexBuffer vertexBuffer(positions, 4 * 4 *sizeof(float));
+    VertexBuffer vertexBuffer(positions, 4 * 5 *sizeof(float));
     VertexBufferLayout vertexBufferLayout;
     vertexBufferLayout.pushFloat(2);
-    vertexBufferLayout.pushFloat(2);
+    vertexBufferLayout.pushFloat(3);
     vertexArray.addBuffer(vertexBuffer,vertexBufferLayout);
 
     IndexBuffer indexBuffer(indices, 6);
 
     glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
 
-    Shader shader("../res/shaders/textureShader.glsl");
+    glm::mat4 rot = glm::mat4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    Shader shader("../res/shaders/shader.glsl");
     shader.bind();
 
     Texture texture("../res/assets/None.png");
     texture.bind();
-    shader.setUniform1i("u_Texture", 0);
+//    shader.setUniform1i("u_Texture", 0);
     shader.setUniformMat4f("u_Proj", proj);
 
     Renderer renderer;
 
+    float theta = 0;
     float r = 0.0f;
     float inc = 0.05f;
     /* Loop until the user closes the window */
@@ -78,7 +85,15 @@ int main() {
         /* Render here */
         renderer.clear();
 
+        theta -= 0.01;
+
+        rot[0][0] = std::cos(theta);
+        rot[1][0] = -std::sin(theta);
+        rot[0][1] = std::sin(theta);
+        rot[1][1] = std::cos(theta);
+
         shader.setUniform4f("u_Color", r, 0.5f, 0.0f, 1.0f);
+        shader.setUniformMat4f("u_Rot", rot);
 
         renderer.draw(vertexArray, indexBuffer, shader);
 

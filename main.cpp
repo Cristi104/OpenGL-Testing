@@ -41,31 +41,53 @@ int main() {
 //                         -0.5f, 0.5f, 0.0f, 1.0f
 //    };
 
-    float positions[] = {-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-                         0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-                         0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-                         -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
+    float positions[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+                         0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+                         0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+                         -0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+                         -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                         0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+                         0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+                         -0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f
     };
     unsigned short indices[] = {
             0, 1, 2,
-            0, 2, 3
+            0, 2, 3,
+            2, 3, 7,
+            7, 2, 6,
+            1, 2, 6,
+            6, 1, 5,
+            5, 1, 0,
+            5, 0, 4,
+            4, 0,3,
+            4, 3, 7,
+            4, 5, 6,
+            4, 6, 7
     };
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glDepthRange(-1.0f,1.0f);
     VertexArray vertexArray;
-    VertexBuffer vertexBuffer(positions, 4 * 5 *sizeof(float));
+    VertexBuffer vertexBuffer(positions, 8 * 6 *sizeof(float));
     VertexBufferLayout vertexBufferLayout;
-    vertexBufferLayout.pushFloat(2);
+    vertexBufferLayout.pushFloat(3);
     vertexBufferLayout.pushFloat(3);
     vertexArray.addBuffer(vertexBuffer,vertexBufferLayout);
 
-    IndexBuffer indexBuffer(indices, 6);
+    IndexBuffer indexBuffer(indices, 36);
 
     glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
 
-    glm::mat4 rot = glm::mat4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+//    glm::mat4 rotx = glm::mat4(sqrt(2)/2.0f,0, sqrt(2)/2.0f,0,0,1,0,0,-sqrt(2)/2.0f,0,sqrt(2)/2.0f,0,0,0,0,1);
+//    proj *= rotx;
+    glm::mat4 rotx = glm::mat4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    glm::mat4 roty = rotx;
+    glm::mat4 rotz = rotx;
+
     Shader shader("../res/shaders/shader.glsl");
     shader.bind();
 
@@ -87,13 +109,25 @@ int main() {
 
         theta -= 0.01;
 
-        rot[0][0] = std::cos(theta);
-        rot[1][0] = -std::sin(theta);
-        rot[0][1] = std::sin(theta);
-        rot[1][1] = std::cos(theta);
+        rotx[1][1] = std::cos(theta);
+        rotx[2][1] = -std::sin(theta);
+        rotx[1][2] = std::sin(theta);
+        rotx[2][2] = std::cos(theta);
+
+        roty[0][0] = std::cos(theta);
+        roty[2][0] = std::sin(theta);
+        roty[0][2] = -std::sin(theta);
+        roty[2][2] = std::cos(theta);
+
+        rotz[0][0] = std::cos(theta);
+        rotz[1][0] = -std::sin(theta);
+        rotz[0][1] = std::sin(theta);
+        rotz[1][1] = std::cos(theta);
 
         shader.setUniform4f("u_Color", r, 0.5f, 0.0f, 1.0f);
-        shader.setUniformMat4f("u_Rot", rot);
+        shader.setUniformMat4f("u_Rotx", rotx);
+        shader.setUniformMat4f("u_Roty", roty);
+        shader.setUniformMat4f("u_Rotz", rotz);
 
         renderer.draw(vertexArray, indexBuffer, shader);
 

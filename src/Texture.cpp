@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include "Texture.h"
 #include "GLErrorCheck.h"
-#include "../external/stb_image.h"
+#include "../external/stb_image/stb_image.h"
 
 int Texture::getMWidth() const {
     return m_Width;

@@ -44,6 +44,7 @@ int main() {
             0, 2, 3
     };
 
+    glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     VertexArray vertexArray;

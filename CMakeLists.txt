@@ -4,8 +4,8 @@ project(OpenGL-Testing)
 set(CMAKE_CXX_STANDARD 23)
 
 file(GLOB sources
-        "external/*.h"
-        "external/*.cpp"
+        "external/*/*.cpp"
+        "external/*/*.h"
         "include/*.h"
         "src/*.cpp"
 )
